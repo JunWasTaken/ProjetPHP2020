@@ -5,12 +5,17 @@
         <title>Formulaire modification coureur</title>
     </head>
     <body>
-        <form method="POST" action="../script PHP/lecture_donnees.php">
-            <label for="nom">Nom du coureur</label>
-            <input type="text" name="nom" id="nom" placeholder="nom du coureur">
-            <label for="prénom">Prénom du coureur</label>
-            <input type="text" name="prénom" id="prénom" placeholder="prénom du coureur">
-            <button type="submit">Envoyer</button>
+        Saississez les données que vous voulez modifier. Laissez celles que vous ne voulez pas modifier vide. 
+        <form>
+            <label for="nom">Nom : </label>
+            <input type="text" name="nom" id="nom" placeholder="nouveau nom">
+            <label for="prénom">Prénom : </label>
+            <input type="text" name="prénom" id="prénom" placeholder="nouveau prénom">
+            <label for="date_naissance">Date de naissance : </label>
+            <input type="number" name="date_naissance" id="date_naissance" placeholder="nouvelle date de naissance">
+            <label for="annee_prem">Année de première participation : </label>
+            <input type="number" name="annee_prem" id="annee_prem" placeholder="nouvelle première année">
+            <button type="submit">Modifier</button>
         </form>
     </body>
 </html>

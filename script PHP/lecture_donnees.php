@@ -17,18 +17,18 @@
     $BDD = fabriquerChaineConnexPDO();
 
     if (empty($_POST['nom']) && empty($_POST['prénom'])){
-        include ("../Formulaire/modifCoureur.htm");
+        include ("../Formulaire/rechercheCoureur.htm");
         echo "Le nom n'est pas saisi";
     }else{
         $nom = $_POST['nom'];
         $prénom = $_POST['prénom'];
         $conn = OuvrirConnexionPDO($BDD,$id_connection,$mdp_connection);
-        include ("../Formulaire/modifCoureur.htm");
+        include ("../Formulaire/rechercheCoureur.htm");
         lecture_donnees($nom, $prénom, $conn);
     }
 
     function lecture_donnees($nom, $prénom, $conn){
-        $sql = "SELECT * FROM tdf_coureur where nom = $nom && prénom == $prénom";
+        $sql = "SELECT distinct * FROM tdf_coureur where nom == $nom && prénom == $prénom";
         $cur = preparerRequetePDO($conn, $sql);
         $res = lireDonneesPDOPreparee($cur,$tab);
         AfficherDonnee1($tab, $res);

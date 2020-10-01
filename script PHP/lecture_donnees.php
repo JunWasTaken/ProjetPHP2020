@@ -1,3 +1,13 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Formulaire modification coureur</title>
+    </head>
+    <body>
+        <?php ?>
+    </body>
+</html>
 <?php
     include "pdo_oracle.php";
     include "util_chap11.php";
@@ -12,13 +22,15 @@
     }else{
         $nom = $_POST['nom'];
         $prénom = $_POST['prénom'];
-        lecture_donnees($id_connection, $mdp_connection, $BDD, $nom, $prénom);
+        $conn = OuvrirConnexionPDO($BDD,$id_connection,$mdp_connection);
+        include ("../Formulaire/modifCoureur.htm");
+        lecture_donnees($nom, $prénom, $conn);
     }
 
-    function lecture_donnees($id_connection, $mdp_connection, $BDD, $nom, $prénom){
-        $conn = OuvrirConnexionPDO($BDD,$id_connection,$mdp_connection);
-        $sql = "SELECT * FROM tdf_coureur where nom = $nom && prenom = $prénom";
-        $nb = LireDonneesPDO1($conn,$sql,$tab);
-        AfficherDonnee2($tab);
+    function lecture_donnees($nom, $prénom, $conn){
+        $sql = "SELECT * FROM tdf_coureur where nom = $nom && prénom == $prénom";
+        $cur = preparerRequetePDO($conn, $sql);
+        $res = lireDonneesPDOPreparee($cur,$tab);
+        AfficherDonnee1($tab, $res);
     }
 ?>

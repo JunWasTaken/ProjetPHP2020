@@ -13,7 +13,18 @@
         $nom = $_POST['nom'];
         $prénom = $_POST['prénom'];
         $conn = OuvrirConnexionPDO($BDD,$id_connection,$mdp_connection);
-        $sql = "SELECT n_coureur, nom, prenom, annee_naissance, annee_prem FROM tdf_coureur where nom like upper('%$nom%')";
+        $rech = $_POST['recherche'];
+        switch ($rech) {
+            case 'start':
+                $sql = "SELECT n_coureur, nom, prenom, annee_naissance, annee_prem FROM tdf_coureur where nom like upper('$nom%')";
+                break;
+            case 'in':
+                $sql = "SELECT n_coureur, nom, prenom, annee_naissance, annee_prem FROM tdf_coureur where nom like upper('%$nom%')";
+                break;
+            default:
+                $sql = "SELECT n_coureur, nom, prenom, annee_naissance, annee_prem FROM tdf_coureur where nom like upper('$nom%')";
+                break;
+        }
 
         if (isset($_POST['tri'])){
             $tri = $_POST['tri'];

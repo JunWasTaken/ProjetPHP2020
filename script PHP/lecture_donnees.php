@@ -1,13 +1,3 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <title>Formulaire modification coureur</title>
-    </head>
-    <body>
-        <?php ?>
-    </body>
-</html>
 <?php
     include "pdo_oracle.php";
     include "util_chap11.php";
@@ -23,14 +13,36 @@
         $nom = $_POST['nom'];
         $prénom = $_POST['prénom'];
         $conn = OuvrirConnexionPDO($BDD,$id_connection,$mdp_connection);
-        include ("../Formulaire/rechercheCoureur.htm");
-        lecture_donnees($nom, $prénom, $conn);
+        $sql = "SELECT n_coureur, nom, prenom, annee_naissance, annee_prem FROM tdf_coureur where nom like upper('%$nom%')";
+
+        if (isset($_POST['tri'])){
+            $tri = $_POST['tri'];
+            switch ($tri){
+                case 'alpha':
+                    $sql = sortOrder($sql, "nom");
+                break;
+                case 'num_coureur':
+                    $sql = sortOrder($sql, "n_coureur");
+                break;
+                case 'date_naissance':
+                    $sql = sortOrder($sql, "annee_naissance");
+                break;
+                case 'prem_participation':
+                    $sql = sortOrder($sql, "annee_prem");
+            }
+        }
+
+        include ("../Formulaire/affichageCoureur.htm");
+        lecture_donnees($sql, $conn);
     }
 
-    function lecture_donnees($nom, $prénom, $conn){
-        $sql = "SELECT distinct * FROM tdf_coureur where nom == $nom && prénom == $prénom";
+    function lecture_donnees($sql, $conn){
         $cur = preparerRequetePDO($conn, $sql);
         $res = lireDonneesPDOPreparee($cur,$tab);
-        AfficherDonnee1($tab, $res);
+        AfficherDonnee2($tab);
+    }
+
+    function sortOrder($sql, $condition){
+        return $sql." order by $condition";
     }
 ?>

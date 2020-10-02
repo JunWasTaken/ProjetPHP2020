@@ -122,4 +122,4 @@ function fabriquerChaineConnexPDO()
 	return $db;
 }
 
- ?>
+?>

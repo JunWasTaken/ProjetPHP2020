@@ -1,17 +1,11 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <title>Affichage coureur</title>
         <meta charset="utf-8">
-        <title>Formulaire modification coureur</title>
     </head>
     <body>
-        <form method="POST" action="../script PHP/lecture_donnees.php">
-            <label for="nom">Nom du coureur</label>
-            <input type="text" name="nom" id="nom" placeholder="nom du coureur">
-
-            <label for="prénom">Prénom du coureur</label>
-            <input type="text" name="prénom" id="prénom" placeholder="prénom du coureur">
-            
+        <form method="POST" >
             <label for="tri">Méthode de tri</label>
             <select name="tri" id="tri">
                 <option value="none" selected>-- Pas de tri --</option>
@@ -20,7 +14,7 @@
                 <option value="date_naissance">Date de naissance</option>
                 <option value="prem_participation">Année de première participation</option>
             </select>
-            <button type="submit">Envoyer</button>
+            <button type="submit">Valider le tri</button>
         </form>
     </body>
 </html>

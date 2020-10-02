@@ -12,7 +12,7 @@ function AfficherDonnee1($tab,$nbLignes)
       echo "<th>$key</th>\n";
     }
     echo "</tr>\n";
-	echo $nbLignes;
+	  echo $nbLignes;
     for ($i = 0; $i < $nbLignes; $i++) // balayage de toutes les lignes
     {
       echo "<tr>\n";
@@ -54,6 +54,33 @@ function AfficherTab($tab)
 	echo "</PRE>";
 }
 //---------------------------------------------------------------------------------------------
+
+function AfficherResultats($tab, $nb){
+  if ($nb>0){
+    echo "<table>";
+
+    echo "<tr>"; //affichage des titres de colonnes
+    foreach($tab[0] as $key => $val){
+      echo "<th>$key</th>";
+    }
+    echo "</tr>";
+
+    for($i = 0; $i<$nb; $i++){ //affichage des résultats 
+      echo "<tr>";
+      foreach($tab[$i] as $val){
+        echo "<td>";
+        echo $val;
+        echo "</td>";
+      }
+      echo "</tr>";
+    }
+
+    echo "</table>";
+  }else
+    echo "Pas de résultats";
+
+  
+}
 ?>
 
 

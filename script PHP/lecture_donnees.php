@@ -39,7 +39,9 @@
     function lecture_donnees($sql, $conn){
         $cur = preparerRequetePDO($conn, $sql);
         $res = lireDonneesPDOPreparee($cur,$tab);
-        AfficherDonnee2($tab);
+        AfficherTab($tab);
+        AfficherResultats($tab, $res);
+        //AfficherDonnee1($tab, $res);
     }
 
     function sortOrder($sql, $condition){

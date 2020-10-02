@@ -5,7 +5,7 @@
     <title>Ajout Etape</title>
 </head>
 <body>
-<form>
+<form action="" method="POST" action="../script PHP/ajout_donnees.php">
 <table>
 	<tr>
 		<td> <label>* Année :</label> <td/> <td> <input type="text" size="1"> <td/> </br>
@@ -25,13 +25,22 @@
 		<td> <label>* Distance de l'étape (en km) :</label> <td/> <td> <input type="text" size="1"> <td/> </br>
 	<tr/>
 	<tr>
-		<td> <label>* Date de l'étape :</label> <td/> <td> <input type="text" size="5"> <td/> </br>
+		<td> <label>* Date de l'étape :</label> <td/> <td> <input type="text" size="6"> <td/> </br>
 	<tr/>
 	<tr>
-		<td> <label>* Catégorie d'étape :</label> <td/> <td> <input type="text" size="1"> <td/> </br>
+		<td> <label>* Catégorie d'étape :</label> <td/> 
+		<td> 
+			<select> 
+				<option value="ETA"> <?php AfficherCategorie("ETA") ?></option>
+				<option value="CMI"> <?php AfficherCategorie("CMI") ?></option>
+				<option value="CME"> <?php AfficherCategorie("CME") ?></option>
+				<option value="PRO"> <?php AfficherCategorie("PRO") ?></option>
+				<option value="PRE"> <?php AfficherCategorie("PRE") ?></option>
+			</select> 
+		<td/> </br>
 	<tr/>
 	<tr>
-		<td> <label> Moyenne :</label> <td/> <td> <input type="text" size="1"> <td/> </br>
+		<td> <label> Moyenne de la vitesse du premier (en km/h) :</label> <td/> <td> <input type="text" size="1"> <td/> </br>
 	<tr/>
 </table>
 <label>* = champs obligatoires </label><br/><br/>
@@ -39,3 +48,4 @@
 </form>
 </body>
 </html>
+//http://php.net/manual/fr/function.ucfirst.php upper caracter first

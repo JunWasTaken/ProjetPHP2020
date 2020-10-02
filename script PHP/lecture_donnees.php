@@ -16,13 +16,13 @@
         $rech = $_POST['recherche'];
         switch ($rech) {
             case 'start':
-                $sql = "SELECT n_coureur, nom, prenom, annee_naissance, annee_prem FROM tdf_coureur where nom like upper('$nom%')";
+                $sql = "SELECT nom, prenom, annee_naissance, annee_prem FROM tdf_coureur where nom like upper('$nom%')";
                 break;
             case 'in':
-                $sql = "SELECT n_coureur, nom, prenom, annee_naissance, annee_prem FROM tdf_coureur where nom like upper('%$nom%')";
+                $sql = "SELECT nom, prenom, annee_naissance, annee_prem FROM tdf_coureur where nom like upper('%$nom%')";
                 break;
             default:
-                $sql = "SELECT n_coureur, nom, prenom, annee_naissance, annee_prem FROM tdf_coureur where nom like upper('$nom%')";
+                $sql = "SELECT nom, prenom, annee_naissance, annee_prem FROM tdf_coureur where nom like upper('$nom%')";
                 break;
         }
 
@@ -40,6 +40,9 @@
                 break;
                 case 'prem_participation':
                     $sql = sortOrder($sql, "annee_prem");
+                break;
+                default : 
+                    $sql = sortOrder($sql, "nom");
             }
         }
 
@@ -50,9 +53,7 @@
     function lecture_donnees($sql, $conn){
         $cur = preparerRequetePDO($conn, $sql);
         $res = lireDonneesPDOPreparee($cur,$tab);
-        AfficherTab($tab);
         AfficherResultats($tab, $res);
-        //AfficherDonnee1($tab, $res);
     }
 
     function sortOrder($sql, $condition){

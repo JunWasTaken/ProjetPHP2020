@@ -67,19 +67,21 @@ function AfficherResultats($tab, $nb){
 
     for($i = 0; $i<$nb; $i++){ //affichage des résultats 
       echo "<tr>";
-      foreach($tab[$i] as $val){
-        echo "<td>";
-        echo $val;
-        echo "</td>";
-      }
-      echo "</tr>";
+      //foreach($tab[$i] as $val){
+        foreach($tab[$i] as $key => $val){
+          echo "<td id=$key=$i>$val</td>";
+        }
+      //}
+      echo "<td>
+            <button onclick=\"recoverDataArray(N_COUREUR=$i);\">
+              <!--<a href=\"../Formulaire/modifCoureur.htm\">-->modifier<!--</a>-->
+            </button>
+          </td>
+      </tr>";
     }
-
     echo "</table>";
   }else
     echo "Pas de résultats";
-
-  
 }
 ?>
 

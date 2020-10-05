@@ -16,13 +16,13 @@
         $rech = $_POST['recherche'];
         switch ($rech) {
             case 'start':
-                $sql = "SELECT nom, prenom, annee_naissance, annee_prem FROM tdf_coureur where nom like upper('$nom%')";
+                $sql = "SELECT n_coureur, nom, prenom, annee_naissance, annee_prem FROM tdf_coureur where nom like upper('$nom%')";
                 break;
             case 'in':
-                $sql = "SELECT nom, prenom, annee_naissance, annee_prem FROM tdf_coureur where nom like upper('%$nom%')";
+                $sql = "SELECT n_coureur, nom, prenom, annee_naissance, annee_prem FROM tdf_coureur where nom like upper('%$nom%')";
                 break;
             default:
-                $sql = "SELECT nom, prenom, annee_naissance, annee_prem FROM tdf_coureur where nom like upper('$nom%')";
+                $sql = "SELECT n_coureur, nom, prenom, annee_naissance, annee_prem FROM tdf_coureur where nom like upper('$nom%')";
                 break;
         }
 
@@ -46,7 +46,7 @@
             }
         }
 
-        include ("../Formulaire/affichageCoureur.htm");
+        include ("../Formulaire/rechercheCoureur.htm");
         lecture_donnees($sql, $conn);
     }
 

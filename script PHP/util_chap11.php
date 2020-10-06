@@ -56,6 +56,7 @@ function AfficherTab($tab)
 //---------------------------------------------------------------------------------------------
 
 function AfficherResultats($tab, $nb){
+  $value = "N_COUREUR=";
   if ($nb>0){
     echo "<table>";
 
@@ -72,16 +73,28 @@ function AfficherResultats($tab, $nb){
           echo "<td id=$key=$i>$val</td>";
         }
       //}
+      $value.=$i;
       echo "<td>
-            <button onclick=\"recoverDataArray(N_COUREUR=$i);\">
-              <!--<a href=\"../Formulaire/modifCoureur.htm\">-->modifier<!--</a>-->
-            </button>
+            <button data-name=$val onclick='recoverDataArray($value)';>modifier</button>
           </td>
       </tr>";
     }
     echo "</table>";
   }else
     echo "Pas de résultats";
+}
+//---------------------------------------------------------------------------------------------
+function AfficherDonneeAjaxVille($tab,$nb)
+{
+  for($ti=0;$i<$nb;$i++)
+  {
+	 $ligne=$tab[$i];
+    foreach($ligne as $valeur)
+	  echo $valeur." <td>
+            <button onclick='AjouterVille($valeur)';>Utiliser</button>
+          </td>";
+    echo "<br/>";
+  }
 }
 ?>
 

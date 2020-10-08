@@ -20,11 +20,9 @@
       }
       $sql = "INSERT INTO tdf_coureur values($n_coureur, upper('$nom'), '$prenom', $date_naissance, $date_prem);";
 
-      $cur = preparerRequetePDO($conn, $sql);
-      AfficherTab($cur);
-      $res = majDonneesPrepareesPDO($cur);
-      AfficherTab($res);
-      if ($res){
+      $stmt = majDonneesPDO($conn, $sql);
+      AfficherTab($stmt);
+      if ($stmt){
         echo "insertion réussie ! ";
       }
 

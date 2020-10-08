@@ -56,7 +56,7 @@ function AfficherTab($tab)
 //---------------------------------------------------------------------------------------------
 
 function AfficherResultats($tab, $nb){
-  $value = "N_COUREUR=";
+  $value = "";
   if ($nb>0){
     echo "<table>";
 
@@ -73,9 +73,9 @@ function AfficherResultats($tab, $nb){
           echo "<td id=$key=$i>$val</td>";
         }
       //}
-      $value.=$i;
+      $value="N_COUREUR=".$i;
       echo "<td>
-            <button data-name=$val onclick='recoverDataArray($value)';>modifier</button>
+            <button onclick='recoverDataArray($value)';>modifier</button>
           </td>
       </tr>";
     }

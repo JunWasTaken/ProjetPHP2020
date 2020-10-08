@@ -5,22 +5,27 @@
     <title>Ajout Coureur</title>
 </head>
 <body>
-<form>
-<table>
-	<tr>
-		<td> <label>* Nom :</label> <td/> <td> <input type="text" size="30"> <td/> </br>
-	<tr>
-		<td> <label>* Prénom :</label> <td/> <td> <input type="text" size="30"> <td/> </br>
-	<tr/>
-	<tr>
-		<td> <label>Année de naissance :</label> <td/> <td> <input type="text" size="1"> <td/> </br>
-	<tr/>
-	<tr>
-		<td> <label>Année du premier Tour de France :</label> <td/> <td> <input type="text" size="1"> <td/> </br>
-	<tr/>
-</table>
-<label>* = champs obligatoires </label><br/><br/>
-<input type="submit"><br/>
-</form>
+	<form method="POST" action="../script PHP/ajout_donnees.php">
+		<table>
+			<tr>
+				<td><label>* Nom :</label></td> 
+				<td><input type="text" size="30" name="nom" id="nom" required></td> </br>
+			</tr>
+			<tr>
+				<td><label>* Prénom :</label></td> 
+				<td><input type="text" size="30" name="prénom" id="nom" required></td> </br>
+			</tr>
+			<tr>
+				<td><label>Année de naissance :</label></td>
+				<td><input type="number" size="4" name="date_naissance" id="date_naissance" ></td> </br>
+			</tr>
+			<tr>
+				<td><label>Année du premier Tour de France :</label></td> 
+				<td><input type="number" size="4" name="date_prem" id="date_prem"></td> </br>
+			</tr>
+		</table>
+		<div>* = champs obligatoires </div>
+		<button type="submit">Envoyer</button>
+	</form>
 </body>
 </html>

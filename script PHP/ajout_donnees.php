@@ -9,16 +9,17 @@
 
     $n_coureur = select_num_coureur($conn);
     $n_coureur+=1;
+    AfficherTab($n_coureur);
 
     if (!empty($_POST['nom'])){
-      $nom = ($_POST['nom']);
+      $nom = strtoupper($_POST['nom']);
       $prenom = ucfirst($_POST['prénom']);
       if (!empty($_POST['date_naissance']))
         $date_naissance = $_POST['date_naissance'];
       if (!empty($_POST['date_prem'])){
         $date_prem = $_POST['date_prem'];
       }
-      $sql = "INSERT INTO tdf_coureur values($n_coureur, upper('$nom'), '$prenom', $date_naissance, $date_prem);";
+      $sql = "INSERT INTO tdf_coureur (n_coureur, NOM, PRENOM, ANNEE_NAISSANCE, ANNEE_PREM) values($n_coureur, '$nom', '$prenom', $date_naissance, $date_prem); ";
 
       $stmt = majDonneesPDO($conn, $sql);
       AfficherTab($stmt);

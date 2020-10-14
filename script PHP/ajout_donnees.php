@@ -31,27 +31,6 @@
     }else{
       include("../Formulaire/AjoutCoureur.htm");
     }
-
-    /*$nom = !empty($_POST['nom']) ? $_POST['nom'] : NULL;
-    $prenom = !empty($_POST['prenom'])? $_POST['prenom'] : NULL;
-    $ddn = intval(!empty($_POST['ddn']))? $_POST['ddn'] : NULL;
-    $prem = intval(!empty($_POST['prem']))? $_POST['prem'] : NULL;
-
-    if(!empty($nom) && !empty($prenom)){
-    	var_dump($ddn);
-      $sql ="INSERT INTO TDF_COUREUR(NOM, PRENOM, ANNEEE_NAISSANCE, ANNEE_PREM) VALUES (:nom,:prenom,:ddn,:prem)";
-      AfficherTab($sql);
-    	$tab= preparerRequetePDO($conn,$sql);
-    	ajouterParamPDO($tab,':nom',$nom);
-      ajouterParamPDO($tab,':prenom',$prenom);
-      ajouterParamPDO($tab,':ddn',$ddn);
-      ajouterParamPDO($tab,':prem',$prem);
-      $res = majDonneesPrepareesPDO($tab);
-      AfficherTab($res);
-      AfficherTab($conn);
-    }else{
-    	echo "non";
-    }*/
 ?>
 
 <?php

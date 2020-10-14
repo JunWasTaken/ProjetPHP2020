@@ -19,7 +19,7 @@
       if (!empty($_POST['date_prem'])){
         $date_prem = $_POST['date_prem'];
       }
-      $sql = "INSERT INTO tdf_coureur (n_coureur, NOM, PRENOM, ANNEE_NAISSANCE, ANNEE_PREM) values($n_coureur, '$nom', '$prenom', $date_naissance, $date_prem); ";
+      $sql = "INSERT INTO tdf_coureur (n_coureur, NOM, PRENOM, ANNEE_NAISSANCE, ANNEE_PREM) values($n_coureur, '$nom', '$prenom', $date_naissance, $date_prem) ";
 
       $stmt = majDonneesPDO($conn, $sql);
       AfficherTab($stmt);

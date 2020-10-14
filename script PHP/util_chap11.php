@@ -55,8 +55,8 @@ function AfficherTab($tab)
 }
 //---------------------------------------------------------------------------------------------
 
-function AfficherResultats($tab, $nb){
-  $value = "";
+function AfficherCoureur($tab, $nb){
+  $value = "N_COUREUR=";
   if ($nb>0){
     echo "<table>";
 
@@ -73,9 +73,9 @@ function AfficherResultats($tab, $nb){
           echo "<td id=$key=$i>$val</td>";
         }
       //}
-      $value="N_COUREUR=".$i;
+      $value.=$i;
       echo "<td>
-            <button onclick='recoverDataArray($value)';>modifier</button>
+            <button data-name=$val onclick='recoverDataArray($value)';>modifier</button>
           </td>
       </tr>";
     }
@@ -84,19 +84,39 @@ function AfficherResultats($tab, $nb){
     echo "Pas de résultats";
 }
 //---------------------------------------------------------------------------------------------
-function AfficherDonneeAjaxVille($tab,$nb)
+function AfficherDonneeAjaxVille($tab,$nb,$type)
 {
-  for($ti=0;$i<$nb;$i++)
+	echo"<table>";
+  for($i=0;$i<$nb;$i++)
   {
 	 $ligne=$tab[$i];
+	 
     foreach($ligne as $valeur)
-	  echo $valeur." <td>
-            <button onclick='AjouterVille($valeur)';>Utiliser</button>
-          </td>";
-    echo "<br/>";
+	  echo "<tr><td>$valeur</td> <td>
+            <input type='button' value='Utiliser' id='ville".$i."' onclick='AjouterVille(\"$valeur\",\"$type\")';>
+          </td><tr/>";
   }
+  echo"<table/>";
+}
+//---------------------------------------------------------------------------------------------
+function AfficherPays($tab)
+{
+	foreach($tab as $ligne)
+	{
+		foreach($ligne as $pays)
+		{
+			echo"<option value=$pays>$pays<option/>";
+		}
+	}
+}
+//---------------------------------------------------------------------------------------------
+
+function DisplayValueForm($value){
+  if (isset($_POST[$value]))
+    echo $_POST[$value];
 }
 ?>
+
 
 
 

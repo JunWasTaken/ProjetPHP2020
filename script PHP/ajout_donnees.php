@@ -1,6 +1,7 @@
 <?php
     include "pdo_oracle.php";
     include "util_chap11.php";
+    include "testNom.php";
 
     $id_connection = "PPHP2A_04";
     $mdp_connection = "PPHP2A_04";
@@ -12,7 +13,7 @@
     AfficherTab($n_coureur);
 
     if (!empty($_POST['nom'])){
-      $nom = strtoupper($_POST['nom']);
+      $nom = strtoupper(nomValide($_POST['nom']));
       $prenom = ucfirst($_POST['prénom']);
       if (!empty($_POST['date_naissance']))
         $date_naissance = $_POST['date_naissance'];
@@ -34,7 +35,6 @@
 ?>
 
 <?php
-
     function select_num_coureur($conn){
       $sql = "SELECT MAX(n_coureur) from tdf_coureur";
       $res = LireDonneesPDO1($conn,$sql,$tab);
@@ -45,6 +45,18 @@
           $return_value = $val;
       }
       return $return_value;
+    }
+
+    function nomValide($nom){
+      echo $nom;
+      if (interdit($nom) == 1){
+        $nom = remplacerAccents($nom);
+        echo $nom;
+        $nom = retireTiret($nom);
+        echo $nom;
+        $nom = retireEspace($nom);
+      }
+      return $nom;
     }
 
 ?>

@@ -1,7 +1,6 @@
 <?php
     include "pdo_oracle.php";
     include "util_chap11.php";
-    //include "lecture_donnees.php";
                 
     $id_connection = "PPHP2A_04";
     $mdp_connection = "PPHP2A_04";
@@ -60,6 +59,6 @@
         $sql = "SELECT n_coureur, nom, prenom, annee_naissance, annee_prem from tdf_coureur where n_coureur=$n_coureur";
         $cur = preparerRequetePDO($conn, $sql);
         $res = lireDonneesPDOPreparee($cur,$tab);
-        AfficherResultats($tab, $res);
+        AfficherCoureur($tab, $res);
     }
 ?>

@@ -99,12 +99,11 @@ function AfficherDonneeAjaxVille($tab,$nb,$type)
   echo"<table/>";
 }
 //---------------------------------------------------------------------------------------------
-function AfficherPays($tab)
+function AfficherPays($tab, $nb)
 {
-	foreach($tab as $ligne)
-	{
-		foreach($ligne as $pays)
-		{
+	for ($i=0; $i<$nb; $i++){
+    $ligne = $tab[$i];
+		foreach($ligne as $pays){
 			echo"<option value=$pays>$pays<option/>";
 		}
 	}

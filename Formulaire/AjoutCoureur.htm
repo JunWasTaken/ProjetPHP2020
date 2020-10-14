@@ -1,31 +1,43 @@
 <!DOCTYPE html>
-<html lang="fr"/>
-<head>
-	<meta charset="utf-8">
-    <title>Ajout Coureur</title>
-</head>
-<body>
-	<form method="POST" action="../script PHP/ajout_donnees.php">
-		<table>
-			<tr>
-				<td><label>* Nom :</label></td> 
-				<td><input type="text" size="30" name="nom" id="nom" value= "<?php DisplayValueForm('nom') ?>" required></td> </br>
-			</tr>
-			<tr>
-				<td><label>* Prénom :</label></td> 
-				<td><input type="text" size="30" name="prénom" id="nom" value= "<?php DisplayValueForm('prénom') ?>" required></td> </br>
-			</tr>
-			<tr>
-				<td><label>Année de naissance :</label></td>
-				<td><input type="number" size="4" name="date_naissance" id="date_naissance" value= "<?php DisplayValueForm('date_naissance') ?>" ></td> </br>
-			</tr>
-			<tr>
-				<td><label>Année du premier Tour de France :</label></td> 
-				<td><input type="number" size="4" name="date_prem" id="date_prem" value= "<?php DisplayValueForm('date_prem') ?>" ></td> </br>
-			</tr>
-		</table>
-		<div>* = champs obligatoires </div>
-		<button type="submit">Envoyer</button>
-	</form>
-</body>
+<html lang="fr">
+	<head>
+		<meta charset="utf-8">
+		<title>Ajout Coureur</title>
+	</head>
+	<body>
+		<form method="POST" action="../script PHP/ajout_donnees.php">
+			<table>
+				<tr>
+					<td><label for="nom">Nom* :</label></td> 
+					<td><input type="text" size="30" name="nom" id="nom" value= "<?php DisplayValueForm('nom') ?>" required></td> </br>
+				</tr>
+				<tr>
+					<td><label for="prénom">Prénom* :</label></td> 
+					<td><input type="text" size="30" name="prénom" id="nom" value= "<?php DisplayValueForm('prénom') ?>" required></td> </br>
+				</tr>
+				<tr>
+					<td><label for="date_naissance">Année de naissance :</label></td>
+					<td><input type="number" size="4" name="date_naissance" id="date_naissance" value= "<?php DisplayValueForm('date_naissance') ?>" ></td> </br>
+				</tr>
+				<tr>
+					<td><label for="date_prem">Année du premier Tour de France :</label></td> 
+					<td><input type="number" size="4" name="date_prem" id="date_prem" value= "<?php DisplayValueForm('date_prem') ?>" ></td> </br>
+				</tr>
+				<tr>
+					<td><label for="date_debut">Année début ** :</label></td>
+					<td><input type="number" size="4" name="date_debut" id="date_debut" value= "<?php DisplayValueForm('date_debut') ?>" ></td> </br>
+				</tr>
+				<tr>
+					<td><label for="pays">Pays d'origine</label></td>
+					<td><select name="pays" id="pays" required>
+						<option value="">--sélectionner un pays</option>
+						<?php listePays($conn) ?>
+					</select></td>
+				</tr>
+			</table>
+			<div>* = champs obligatoires </div>
+			<div>** = vous pouvez laisser cette colonne vide si vous voulez que la date de debut soit la même que la date de naissance</div>
+			<button type="submit">Envoyer</button>
+		</form>
+	</body>
 </html>

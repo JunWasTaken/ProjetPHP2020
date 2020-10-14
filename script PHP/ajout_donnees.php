@@ -14,9 +14,14 @@
 
     if (!empty($_POST['nom'])){
       $nom = strtoupper(nomValide($_POST['nom']));
-      $prenom = ucfirst($_POST['prénom']);
-      if (!empty($_POST['date_naissance']))
-        $date_naissance = $_POST['date_naissance'];
+      if (!empty($_POST['prénom'])){ //vérifie si le prénom n'est pas vide
+        $prenom = my_mb_ucfirst(prenomValide($_POST['prénom']));
+        if (!empty($_POST['pays'])){ //vérifie que le coureur a bien une nationalité
+          if (empty($_POST['date_naissance']) && !empty($_POST['date_naissance'])){
+            $date_prem = $_POST['date_prem'];
+            $sql = "INSERT INTO tdf_coureur (n_coureur, NOM, PRENOM, ANNEE_PREM) values($n_coureur, '$nom', '$prenom', $date_prem) ";
+          }else if(!empty($_POST['date_naissance']) && empty($_POST['date_prem'])){
+            $date_naissance = $_POST['date_naissance'];
       if (!empty($_POST['date_prem'])){
         $date_prem = $_POST['date_prem'];
       }

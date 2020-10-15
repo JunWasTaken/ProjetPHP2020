@@ -11,6 +11,7 @@
 
     $n_coureur = select_num_coureur($conn);
     $n_coureur+=1;
+    $pays_coureur = select_pays_coureur($conn, $n_coureur);
 
     if (!empty($_POST['nom'])){ //vérifie si le prénom existe
       $nom = strtoupper(nomValide($_POST['nom']));
@@ -31,14 +32,16 @@
           $stmt = majDonneesPDO($conn, $sql);
           if ($stmt){
             echo "tdf_coureur : insertion réussie ! ";
-            if (!empty($_POST['date_debut'])){
+            if (!empty($_POST['date_debut']) && $_POST['pays'] != "init"){
               $pays = $_POST['pays'];
               $annee = $_POST['date_debut'];
               insert_app_nation($conn, $pays, $annee, $n_coureur);
-            }else if (empty($_POST['date_debut'])){
+            }else if (empty($_POST['date_debut']) && $_POST['pays'] != "init"){
               $pays = $_POST['pays'];
               insert_app_nation($conn, $pays, $date_naissance, $n_coureur);
-            }
+            }else
+              echo "sélectionner un pays valide";
+              include("../Formulaire/AjoutCoureur.htm");
           }else{
             echo "l'insertion a échouée...";
             include("../Formulaire/AjoutCoureur.htm");
@@ -103,13 +106,23 @@
 
   function insert_app_nation($conn, $pays, $annee, $n_coureur){
     $pays = select_code_cio($conn, $pays);
-    AfficherTab($pays);
-    $sql = "INSERT INTO tdf_app_nation (n_coureur, code_cio, annee_debut) values ($n_coureur, $pays, $annee)";
+    $sql = "INSERT INTO tdf_app_nation (n_coureur, code_cio, annee_debut) values ($n_coureur, '$pays', $annee)";
     $stmt = majDonneesPDO($conn, $sql);
-    AfficherTab($stmt);
     if ($stmt){
       echo "tdf_app_nation : insertion réussie ! ";
     }else
       echo "tdf_app_nation : l'insertion a échouée...";
   }
+
+  function select_pays_coureur($conn, $n_coureur){
+    $sql = "SELECT nom from tdf_nation where code_cio in (select code_cio from tdf_app_nation where n_coureur = $n_coureur)";
+    $res = LireDonneesPDO3($conn, $sql, $tab);
+    $return_value = '';
+
+    for ($i=0; $i<$res; $i++){
+    foreach($tab[$i] as $key=>$val)
+        $return_value = $val;
+    }
+    return $return_value;
+}
 ?>

@@ -15,6 +15,14 @@
             <input type="number" name="date_naissance" id="date_naissance" placeholder="nouvelle date de naissance">
             <label for="annee_prem">Année de première participation : </label>
             <input type="number" name="annee_prem" id="annee_prem" placeholder="nouvelle première année">
+            <label for="annee_debut">Année de début : </label>
+            <input type="number" name="annee_debut" id="annee_debut" placeholder="nouvelle année de début">
+            <label for="annee_fin">Année de fin de carrière : </label>
+            <input type="number" name="annee_fin" id="annee_fin" placeholder="nouvelle annee de fin">
+            <label for="pays">Pays d'origine : </label>
+            <select name="pays">
+                <?php listePays($conn) ?>
+            </select>
             <button type="submit">Modifier</button>
         </form>
         <form method="POST" action="delete_coureur.php">

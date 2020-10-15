@@ -2,5 +2,5 @@
     $n_coureur = $_GET["uid"];
 
     setcookie("n_coureur", $n_coureur);
-    include ('../Formulaire/modifCoureur.htm');
+    include ('../script PHP/modif_coureur.php');
 ?>

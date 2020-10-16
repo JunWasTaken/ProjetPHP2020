@@ -21,6 +21,7 @@
             <input type="number" name="annee_fin" id="annee_fin" placeholder="nouvelle annee de fin">
             <label for="pays">Pays d'origine : </label>
             <select name="pays">
+                <option value="init">--sélectionner un pays--</option>
                 <?php listePays($conn) ?>
             </select>
             <button type="submit">Modifier</button>

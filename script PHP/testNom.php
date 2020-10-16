@@ -96,4 +96,13 @@ function retireEspace($nom){
 	$nom = preg_replace('/\s\s+/', ' ', $nom);
 	return $nom;
 }
+
+function nomValide($nom){ //vérifie que le nom du coureur est bien valide, et le modifie pour qu'il corresponde au formatage de la base de données
+    if (interdit($nom) == 1){
+      $nom = remplacerAccents($nom);
+      $nom = retireTiret($nom);
+      $nom = retireEspace($nom);
+      return $nom;
+    }
+  }
 ?>

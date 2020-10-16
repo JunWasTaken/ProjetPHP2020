@@ -116,4 +116,13 @@ function retireEspacePrenom($prenom){
 	$prenom = preg_replace('/\s\s+/', ' ', $prenom);
 	return $prenom;
 }
+
+function prenomValide($prenom){ //idem que pour le nom mais avec le prénom
+    if (interditPrenom($prenom)){
+      $prenom = remplacerAccentsPrenom($prenom);
+      $prenom = retireTiretPrenom($prenom);
+      $nom = retireEspacePrenom($prenom);
+      return $nom;
+    }
+  }
 ?>

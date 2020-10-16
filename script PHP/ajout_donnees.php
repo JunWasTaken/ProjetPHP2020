@@ -41,17 +41,18 @@
               insert_app_nation($conn, $pays, $date_naissance, $n_coureur);
             }else
               echo "sélectionner un pays valide";
-              include("../Formulaire/AjoutCoureur.htm");
+              include "../Formulaire/AjoutCoureur.htm";
+            include ("../Formulaire/Accueil.htm");
           }else{
             echo "l'insertion a échouée...";
-            include("../Formulaire/AjoutCoureur.htm");
+            include "../Formulaire/AjoutCoureur.htm";
           }
         }else
-          include("../Formulaire/AjoutCoureur.htm");
+          include "../Formulaire/AjoutCoureur.htm" ;
       }else
-        include("../Formulaire/AjoutCoureur.htm");
+        include "../Formulaire/AjoutCoureur.htm" ;
     }else{
-      include("../Formulaire/AjoutCoureur.htm");
+      include "../Formulaire/AjoutCoureur.htm" ;
     }
 ?>
 
@@ -66,24 +67,6 @@
         $return_value = $val;
     }
     return $return_value;
-  }
-
-  function nomValide($nom){ //vérifie que le nom du coureur est bien valide, et le modifie pour qu'il corresponde au formatage de la base de données
-    if (interdit($nom) == 1){
-      $nom = remplacerAccents($nom);
-      $nom = retireTiret($nom);
-      $nom = retireEspace($nom);
-      return $nom;
-    }
-  }
-
-  function prenomValide($prenom){ //idem que pour le nom mais avec le prénom
-    if (interditPrenom($prenom)){
-      $prenom = remplacerAccentsPrenom($prenom);
-      $prenom = retireTiretPrenom($prenom);
-      $nom = retireEspacePrenom($prenom);
-      return $nom;
-    }
   }
 
   function listePays($conn){ //affiche la liste des pays pour le coureur

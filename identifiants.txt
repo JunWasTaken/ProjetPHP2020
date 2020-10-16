@@ -1,4 +1,0 @@
-ADMINER : 
-adresse :  kiutoracle18.unicaen.fr:1521/info.kiutoracle18.unicaen.fr
-user : PPHP2A_04
-mdp : PPHP2A_04

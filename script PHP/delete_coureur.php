@@ -15,5 +15,6 @@
 
     if ($res){
         echo "coureur supprimé ! ";
+        echo "<button><a href='../Formulaire/Accueil.htm'>Retour Accueil</a></button>";
     }
 ?>

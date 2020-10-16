@@ -1,6 +1,8 @@
 <?php //script php traitement
     include "pdo_oracle.php";
     include "util_chap11.php";
+    include "testNom.php";
+    include "testPrenom.php";
                 
     $id_connection = "PPHP2A_04";
     $mdp_connection = "PPHP2A_04";
@@ -16,22 +18,27 @@
     include ("../Formulaire/modifCoureur.htm");
 
     if (!empty($_POST['nom'])){ //modifie le nom
-        $new_name = $_POST['nom'];
+        $new_name = nomValide($_POST['nom']);
         $sql.=" set nom =upper('$new_name')";
         $i++;
     }
 
-    /*$sql.=create_update_query($_POST['prénom'], 'prenom', $i, true);
-    $sql.=create_update_query($_POST['date_naissance'], 'annee_naissance', $i, false);
-    $sql.=create_update_query($_POST['annee_prem'], 'annee_prem', $i, false);*/
+    /*if (!empty($_POST['prénom'])){
+        $new_first_name = prenomValide($_POST['prénom']);
+        $sql.=create_update_query($new_first_name, 'prenom', $i, true);
+    }
+    if (!empty($_POST['date_naissance']))
+        $sql.=create_update_query($_POST['date_naissance'], 'annee_naissance', $i, false);
+    if (!empty($_POST['annee_prem']))
+        $sql.=create_update_query($_POST['annee_prem'], 'annee_prem', $i, false);*/
 
     //update_app_nation($conn, $n_coureur, $_POST['annee_debut'], $_POST['annee_fin'], $_POST['pays']);
     if (!empty($_POST['prénom'])){ //modifie le nom
         if ($i>0){
-            $new_first_name = $_POST['prénom'];
+            $new_first_name = prenomValide($_POST['prénom']);
             $sql.=", prenom ='$new_first_name'";
         }else{
-            $new_first_name = $_POST['prénom'];
+            $new_first_name = prenomValide($_POST['prénom']);
             $sql.=" set prenom ='$new_first_name'";
             $i++;
         }
@@ -58,6 +65,7 @@
             $i++;
         }
     }
+    
 
     $sql.=" where n_coureur = ".$n_coureur;
     AfficherTab($sql);
@@ -65,6 +73,53 @@
     $res = majDonneesPrepareesPDO($cur);
     if ($res){
         $sql = "SELECT n_coureur, nom, prenom, annee_naissance, annee_prem from tdf_coureur where n_coureur=$n_coureur";
+        $cur = preparerRequetePDO($conn, $sql);
+        $res = lireDonneesPDOPreparee($cur,$tab);
+        AfficherCoureur($tab, $res);
+    }
+
+    $sql2 = "UPDATE tdf_app_nation ";
+    $j = 0;
+
+    if (!empty($_POST['annee_debut'])){
+        if ($j>0){
+            $new_debut = $_POST['annee_debut'];
+            $sql2.=", annee_debut = $new_debut";
+        }else{
+            $new_debut = $_POST['annee_debut'];
+            $sql2.="set annee_debut = $new_debut";
+            $j++;
+        }
+    }
+
+    if (!empty($_POST['annee_fin'])){
+        if ($j>0){
+            $new_fin = $_POST['annee_fin'];
+            $sql2.=", annee_fin = $new_fin";
+        }else{
+            $new_fin = $_POST['annee_fin'];
+            $sql2.="set annee_fin = $new_fin";
+            $j++;
+        }
+    }
+
+    if ($_POST['pays'] != $pays_coureur){
+        if ($j>0){
+            $new_pays = select_code_cio($conn, $_POST['pays']);
+            $sql2.=", code_cio = '$new_pays'";
+        }else{
+            $new_pays = select_code_cio($conn, $_POST['pays']);
+            $sql2.="set code_cio = '$new_pays'";
+            $j++;
+        }
+    }
+
+    $sql2.=" where n_coureur = ".$n_coureur;
+    AfficherTab($sql2);
+    $cur = preparerRequetePDO($conn, $sql2);
+    $res = majDonneesPrepareesPDO($cur);
+    if ($res ){
+        $sql = "SELECT n_coureur, annee_debut, annee_fin, code_cio from tdf_app_nation where n_coureur=$n_coureur";
         $cur = preparerRequetePDO($conn, $sql);
         $res = lireDonneesPDOPreparee($cur,$tab);
         AfficherCoureur($tab, $res);
@@ -114,6 +169,7 @@
      *  - le type (true si la colonne est une string, false sinon)
      */
     function create_update_query($value, $cat, $cpt, $type){
+        AfficherTab($cpt);
         $sql ='';
         if (!empty($value)){ 
             if ($cpt>0){
@@ -131,7 +187,6 @@
                 $cpt++;
             }
         }
-
         return $sql;
     }
 

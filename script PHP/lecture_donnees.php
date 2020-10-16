@@ -16,13 +16,13 @@
         $rech = $_POST['recherche'];
         switch ($rech) {
             case 'start':
-                $sql = "SELECT n_coureur, nom, prenom, annee_naissance, annee_prem FROM tdf_coureur where nom like upper('$nom%')";
+                $sql = "SELECT n_coureur, nom, prenom, annee_naissance, annee_debut, annee_prem, code_cio FROM tdf_coureur join tdf_app_nation using (n_coureur) where nom like upper('$nom%')";
                 break;
             case 'in':
-                $sql = "SELECT n_coureur, nom, prenom, annee_naissance, annee_prem FROM tdf_coureur where nom like upper('%$nom%')";
+                $sql = "SELECT n_coureur, nom, prenom, annee_naissance, annee_debut, annee_prem, code_cio FROM tdf_coureur join tdf_app_nation using (n_coureur) where nom like upper('%$nom%')";
                 break;
             default:
-                $sql = "SELECT n_coureur, nom, prenom, annee_naissance, annee_prem FROM tdf_coureur where nom like upper('$nom%')";
+                $sql = "SELECT n_coureur, nom, prenom, annee_naissance, annee_debut, annee_prem, code_cio FROM tdf_coureur join tdf_app_nation using (n_coureur) where nom like upper('$nom%')";
                 break;
         }
 

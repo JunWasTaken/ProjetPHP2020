@@ -49,9 +49,16 @@ foreach($tab as $var){
 function remplacerAccents($nom){
 //Lien du tableau : https://stackoverflow.com/questions/3371697/replacing-accented-characters-php
 	
-$accents = array('Š'=>'s', 'š'=>'s', 'Ž'=>'z', 'ž'=>'z', 'À'=>'a', 'à'=>'a', 'Á'=>'a', 'á'=>'a', 'Â'=>'a', 'â'=>'a', 'Ã'=>'a', 'ã'=>'a', 'Ä'=>'a', 'ä'=>'a', 'Å'=>'a', 'å'=>'a', 'Æ'=>'ae', 'æ' =>'a','Ç'=>'c', 'È'=>'e', 'è'=>'e', 'É'=>'e', 'é'=>'e','Ê'=>'e', 'ê'=>'e','Ë'=>'e', 'ë'=>'e', 'Ì'=>'i', 'ì'=>'i', 'Í'=>'i', 'í'=>'i', 'Î'=>'i', 'î'=>'i', 'Ï'=>'i', 'ï'=>'i', 'Ñ'=>'n', 'ñ'=>'n','Ò'=>'o', 'ò'=>'o', 'Ó'=>'o', 'ó'=>'o', 'Ô'=>'o', 'ô'=>'o', 'Õ'=>'o', 'õ'=>'o', 'Ö'=>'o', 'ö'=>'o', 'Ø'=>'o', 'ø'=>'o','Ù'=>'u', 'ù'=>'u', 'Ú'=>'u', 'ú'=>'u', 'Û'=>'u', 'û'=>'u', 'Ŭ' => 'u', 'ü'=>'u', 'Ü'=>'u', 'Ý'=>'y', 'ý'=>'y', 'Ÿ'=> 'y', 'ÿ'=>'y', 'ð'=>'d', 'Ð'=>'d', 'þ'=>'b', 'Þ'=>'b', 'ß'=>'b');
+$accents = array('Š'=>'s', 'š'=>'s', 'Ž'=>'z', 'ž'=>'z', 'À'=>'a', 'à'=>'a', 'Á'=>'a', 'á'=>'a', 'Â'=>'a', 'â'=>'a', 'Ã'=>'a', 'ã'=>'a', 'Ä'=>'a', 'ä'=>'a', 'Å'=>'a', 'å'=>'a', 'Æ'=>'ae', 'æ' =>'a','Ç'=>'c', 'ç'=>'c', 'È'=>'e', 'è'=>'e', 'É'=>'e', 'é'=>'e','Ê'=>'e', 'ê'=>'e','Ë'=>'e', 'ë'=>'e', 'Ì'=>'i', 'ì'=>'i', 'Í'=>'i', 'í'=>'i', 'Î'=>'i', 'î'=>'i', 'Ï'=>'i', 'ï'=>'i', 'Ñ'=>'n', 'ñ'=>'n','Ò'=>'o', 'ò'=>'o', 'Ó'=>'o', 'ó'=>'o', 'Ô'=>'o', 'ô'=>'o', 'Õ'=>'o', 'õ'=>'o', 'Ö'=>'o', 'ö'=>'o', 'Ø'=>'o', 'ø'=>'o','Ù'=>'u', 'ù'=>'u', 'Ú'=>'u', 'ú'=>'u', 'Û'=>'u', 'û'=>'u', 'Ŭ' => 'u', 'ü'=>'u', 'Ü'=>'u', 'Ý'=>'y', 'ý'=>'y', 'Ÿ'=> 'y', 'ÿ'=>'y', 'ð'=>'d', 'Ð'=>'d', 'þ'=>'b', 'Þ'=>'b', 'ß'=>'b','œ' => "OE",'®'=>'R');
 $nom = strtr($nom, $accents);
 return $nom;
+}
+
+function remplacerApostrophes($nom){
+	//$apostrophe=array("’"=>"''", "ʾ"=>"''", "′"=>"''", "ˊ"=>"''", "ꞌ"=>"''", "‘"=>"''", "ʿ"=>"''", "‵"=>"''", "ˋ"=>"''" ,"''"=> "' '");
+	$nom = str_replace("'", "''", $nom);
+	//$nom = strtr($nom, $apostrophe);
+	return $nom;
 }
 
 function retireTiret($nom){
@@ -59,35 +66,36 @@ function retireTiret($nom){
 	return $nom;
 }
 
-function lettresObligatoire($nom){
-	$regex="[a-z]";
-	if(preg_match($regex, $nom)){
-		echo"$nom";
-	}
-}
-
 function interdit($nom){
-	$regex="$\\\\$";
-	$regex2="/[!$%^&*)(_+|~=}{€@\:;><?!,.]/";
-	$regex3="$(.*--.*){2}$";
-	$regex4="'/^[^\']*$/'";
+	$regex1="$(.*--.*){2}$";
+	$regex2="'/^[^\']*$/'";
+	$regex3="$\\\\$";
+	$regex4="~^[a-zA-ZÀ-ÖØ-öø-ÿŸœŒ\-'\s']+$~u";
+	$regex5="/[a-zA-Z]/";
+	$regex6="[€\"]";
 
-	if(preg_match($regex, $nom)){
+    if(preg_match($regex1, $nom)){
+		echo "Erreur de saisie1 : trop de - dans le nom";
 		return -1;
 	}else if(preg_match($regex2, $nom)){
+		echo "Erreur de saisie2";
 		return -1;
 	}else if(preg_match($regex3, $nom)){
+		echo "Erreur de saisie 3 : présence de \ ";
 		return -1;
-	}else if(preg_match($regex4, $nom)){
+	}else if(strlen($nom) > 40){
+		echo "Erreur de saisie4 : chaîne trop longue";
 		return -1;
-	}else if (strlen($nom) > 35){
-    	echo"interdit";
-    }else if($nom=="'"){
-        return -1;
-	}else if($nom==""){
-        return -1;
-    }else{
+	}else if(preg_match($regex6, $nom)){
+		echo "Erreur de saisie : € présent dans la chaîne";
+		return -1;
+	}else if($nom == "'"){
+		echo "vous ne pouvez pas saisir qu'un ' ";
+		return -1;
+	}else if (preg_match($regex4, $nom) || preg_match($regex5, $nom)) {
 		return 1;
+    }else {
+		echo "Erreur de saisie 5 :caractère invalide saisi";
 	}
 
 }
@@ -100,8 +108,11 @@ function retireEspace($nom){
 function nomValide($nom){ //vérifie que le nom du coureur est bien valide, et le modifie pour qu'il corresponde au formatage de la base de données
     if (interdit($nom) == 1){
       $nom = remplacerAccents($nom);
+      $nom = remplacerApostrophes($nom);
       $nom = retireTiret($nom);
-      $nom = retireEspace($nom);
+	  $nom = retireEspace($nom);
+	  $nom = strtoupper($nom);
+	  echo $nom;
       return $nom;
     }
   }

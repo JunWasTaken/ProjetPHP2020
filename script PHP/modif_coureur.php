@@ -6,7 +6,7 @@
                 
     $id_connection = "PPHP2A_04";
     $mdp_connection = "PPHP2A_04";
-    $BDD = fabriquerChaineConnexPDO();
+    $BDD = "oci:dbname=kiutoracle18.unicaen.fr:1521/info.kiutoracle18.unicaen.fr;charset=AL32UTF8";
     $conn = OuvrirConnexionPDO($BDD,$id_connection,$mdp_connection);
 
     $n_coureur = $_COOKIE['n_coureur'];
@@ -50,7 +50,7 @@
             $sql.=", annee_naissance = $new_birthdate";
         }else{
             $new_birthdate = $_POST['date_naissance'];
-            $sql.=" set date_naissance = $new_birthdate";
+            $sql.=" set annee_naissance = $new_birthdate";
             $i++;
         }
     }
@@ -71,12 +71,6 @@
     AfficherTab($sql);
     $cur = preparerRequetePDO($conn, $sql);
     $res = majDonneesPrepareesPDO($cur);
-    if ($res){
-        $sql = "SELECT n_coureur, nom, prenom, annee_naissance, annee_prem from tdf_coureur where n_coureur=$n_coureur";
-        $cur = preparerRequetePDO($conn, $sql);
-        $res = lireDonneesPDOPreparee($cur,$tab);
-        AfficherCoureur($tab, $res);
-    }
 
     $sql2 = "UPDATE tdf_app_nation ";
     $j = 0;
@@ -103,7 +97,7 @@
         }
     }
 
-    if ($_POST['pays'] != $pays_coureur){
+    if ($_POST['pays'] != $pays_coureur && $_POST['pays'] != "init"){
         if ($j>0){
             $new_pays = select_code_cio($conn, $_POST['pays']);
             $sql2.=", code_cio = '$new_pays'";
@@ -118,8 +112,9 @@
     AfficherTab($sql2);
     $cur = preparerRequetePDO($conn, $sql2);
     $res = majDonneesPrepareesPDO($cur);
-    if ($res ){
-        $sql = "SELECT n_coureur, annee_debut, annee_fin, code_cio from tdf_app_nation where n_coureur=$n_coureur";
+    AfficherTab($res);
+    if ($res){
+        $sql = "SELECT n_coureur, nom, prenom, annee_naissance, annee_debut, annee_fin, code_cio from tdf_coureur join tdf_app_nation using (n_coureur) where n_coureur=$n_coureur";
         $cur = preparerRequetePDO($conn, $sql);
         $res = lireDonneesPDOPreparee($cur,$tab);
         AfficherCoureur($tab, $res);
@@ -143,7 +138,7 @@
     function listePays($conn){ //affiche la liste des pays pour le coureur
         $sql = "select nom from tdf_nation order by nom";
         $res = LireDonneesPDO2($conn, $sql, $tab);
-        AfficherPays($tab, $res);
+        AfficherAjaxPays($tab, $res);
     }
 
     function update_app_nation($conn, $n_coureur, $debut, $fin, $pays){

@@ -98,14 +98,21 @@
     echo"<table/>";
   }
   //---------------------------------------------------------------------------------------------
-  function AfficherPays($tab, $nb){
-    for ($i=0; $i<$nb; $i++){
-      $ligne = $tab[$i];
-      foreach($ligne as $pays){
-        echo"<option value=$pays>$pays<option/>";
-      }
-    }
-  }
+	function ChangerPays($ville,$type)
+	{
+
+	}
+	//---------------------------------------------------------------------------------------------
+	function AfficherAjaxPays($tab)
+	{
+		foreach($tab as $ligne)
+		{
+			foreach($ligne as $pays)
+			{
+				echo"<option value=$pays id=$pays>$pays<option/>";
+			}
+		}
+	}
   //---------------------------------------------------------------------------------------------
 
   function DisplayValueForm($value){

@@ -4,14 +4,13 @@
                 
     $id_connection = "PPHP2A_04";
     $mdp_connection = "PPHP2A_04";
-    $BDD = fabriquerChaineConnexPDO();
+    $BDD = "oci:dbname=kiutoracle18.unicaen.fr:1521/info.kiutoracle18.unicaen.fr;charset=AL32UTF8";
 
     if (empty($_POST['nom']) && empty($_POST['prénom'])){
         include ("../Formulaire/rechercheCoureur.htm");
         echo "Le nom n'est pas saisi";
     }else{
         $nom = $_POST['nom'];
-        $prénom = $_POST['prénom'];
         $conn = OuvrirConnexionPDO($BDD,$id_connection,$mdp_connection);
         $rech = $_POST['recherche'];
         switch ($rech) {

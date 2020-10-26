@@ -112,7 +112,6 @@ function nomValide($nom){ //vérifie que le nom du coureur est bien valide, et l
       $nom = retireTiret($nom);
 	  $nom = retireEspace($nom);
 	  $nom = strtoupper($nom);
-	  echo $nom;
       return $nom;
     }
   }

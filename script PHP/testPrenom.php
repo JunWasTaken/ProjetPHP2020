@@ -134,7 +134,6 @@ function prenomValide($prenom){ //idem que pour le nom mais avec le prénom
       $prenom = retireTiretPrenom($prenom);
 	  $prenom = retireEspacePrenom($prenom);
 	  $prenom = my_mb_ucfirstPrenom($prenom);
-	  echo "  ".$prenom;
       return $prenom;
     }
   }

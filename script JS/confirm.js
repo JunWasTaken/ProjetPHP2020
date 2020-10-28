@@ -5,3 +5,8 @@ function confirm_deletion(){
     }else
         window.location.href = '../script PHP/modif_coureur.php';
 }
+
+function participer_tdf(message){
+    window.alert(message);
+    window.location.href = '../script PHP/lecture_donnees.php';
+}

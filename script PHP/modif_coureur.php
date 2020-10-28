@@ -3,6 +3,7 @@
     include "util_chap11.php";
     include "testNom.php";
     include "testPrenom.php";
+    include "testDate.php";
                 
     $id_connection = "PPHP2A_04";
     $mdp_connection = "PPHP2A_04";
@@ -17,6 +18,13 @@
     $sql2 = "UPDATE tdf_app_nation ";
     $j = 0;
 
+    $old_birthdate = select_date($conn, $n_coureur, 'annee_naissance');
+    $old_first = select_date($conn, $n_coureur, 'annee_prem');
+    $new_birthdate;
+    $new_debut;
+    $new_prem;
+    $new_fin;
+
     include ("../Formulaire/modifCoureur.htm");
 
     try{
@@ -24,42 +32,72 @@
         //on éxécute la requête uniquement si on change le nom ou le prénom ou la date de naissance ou la date de première participation
         if (!empty($_POST['nom']) || !empty($_POST['prénom']) || !empty($_POST['date_naissance']) || !empty($_POST['annee_prem'])){ 
             if (!empty($_POST['nom'])){ //modifie le nom
-                $new_name = strtoupper(nomValide($_POST['nom']));
-                $sql.=" set nom =upper('$new_name')";
-                $i++;
+                try{
+                    $new_name = nomValide($_POST['nom']);
+                    $new_name = strtoupper($new_name);
+                    $sql.=" set nom =upper('$new_name')";
+                    $i++;
+                }catch (Exception $e){
+                    echo "le nom ne sera pas modifié<br>", $e->getMessage();
+                }                
             }
 
             if (!empty($_POST['prénom'])){ //modifie le nom
-                if ($i>0){
+                try{ //on vérifie que le prénom est bien légal
                     $new_first_name = prenomValide($_POST['prénom']);
-                    $sql.=", prenom ='$new_first_name'";
-                }else{
-                    $new_first_name = prenomValide($_POST['prénom']);
-                    $sql.=" set prenom ='$new_first_name'";
-                    $i++;
+                    $new_first_name = my_mb_ucfirstPrenom($new_first_name);
+                    if ($i>0)
+                        $sql.=", prenom ='$new_first_name'";
+                    else{
+                        $sql.=" set prenom ='$new_first_name'";
+                        $i++;
+                    }
+                }catch(Exception $e){
+                    echo "le prénom ne sera pas modifié<br>", $e->getMessage();
                 }
             }
         
             if (!empty($_POST['date_naissance'])){ //modifie la date de naissance
-                if ($i>0){
+                try{ //on vérifie que la date de naissance est bien légale
                     $new_birthdate = $_POST['date_naissance'];
-                    $sql.=", annee_naissance = $new_birthdate";
-                }else{
-                    $new_birthdate = $_POST['date_naissance'];
-                    $sql.=" set annee_naissance = $new_birthdate";
-                    $i++;
+                    annee_naissance_valide($new_birthdate, 2020);
+                    if ($i>0){
+                        $sql.=", annee_naissance = $new_birthdate";
+                    }else{
+                        $sql.=" set annee_naissance = $new_birthdate";
+                        $i++;
+                    }
+                }catch (Exception $e){
+                    echo $e->getMessage();
                 }
             }
         
             if(!empty($_POST['annee_prem'])){ //modifie l'année de première participation
-                if ($i>0){
+                try{
                     $new_prem = $_POST['annee_prem'];
-                    $sql.=", annee_prem = $new_prem";
-                }else{
-                    $new_prem = $_POST['annee_prem'];
-                    $sql.=" set annee_prem = $new_prem";
-                    $i++;
+                    if (isset($new_birthdate))
+                        prem_plus_grande_naissance($new_prem, $new_birthdate);
+                    else
+                    prem_plus_grande_naissance($new_prem, $old_birthdate);
+                    if ($i>0){
+                        $sql.=", annee_prem = $new_prem";
+                    }else{
+                        $sql.=" set annee_prem = $new_prem";
+                        $i++;
+                    }
+                }catch (Exception $e){
+                    echo "la date de première participation modifiée<br>", $e->getMessage();
+                    if (isset($new_birthdate)){
+                        $new_prem = $new_birthdate+20;
+                        if ($i>0){
+                            $sql.=", annee_prem = $new_prem";
+                        }else{
+                            $sql.=" set annee_prem = $new_prem";
+                            $i++;
+                        }
+                    }
                 }
+
             }
             $sql.=" where n_coureur = ".$n_coureur;
             $cur = preparerRequetePDO($conn, $sql);
@@ -67,67 +105,62 @@
         }
 
         $exist = isset($_POST['pays']);
-        echo $exist;
 
         if (!empty($_POST['annee_debut']) || !empty($_POST['annee_fin']) || isset($_POST['pays'])){
-            if (exist_app_nation($conn, $n_coureur)){
-                if (!empty($_POST['annee_debut'])){
+            if (!empty($_POST['annee_debut'])){
+                try{
+                    $new_debut=$_POST['annee_debut'];
+                    if (isset($new_birthdate))
+                        debut_sup_naissance($new_debut, $new_birthdate);
+                    else
+                        debut_sup_naissance($new_debut, $old_birthdate);
+                    
+                    if (isset($new_prem))
+                        debut_inf_prem($new_debut, $new_prem);
+                    else
+                        debut_inf_prem($new_debut, $old_first);
+
                     if ($j>0){
-                        $new_debut = $_POST['annee_debut'];
                         $sql2.=", annee_debut = $new_debut";
                     }else{
-                        $new_debut = $_POST['annee_debut'];
                         $sql2.="set annee_debut = $new_debut";
                         $j++;
                     }
-                }
-            
-                if (!empty($_POST['annee_fin'])){
-                    if ($j>0){
-                        $new_fin = $_POST['annee_fin'];
-                        $sql2.=", annee_fin = $new_fin";
-                    }else{
-                        $new_fin = $_POST['annee_fin'];
-                        $sql2.="set annee_fin = $new_fin";
-                        $j++;
-                    }
-                }
-            
-                if ($_POST['pays'] != $pays_coureur && $_POST['pays'] != "init"){
-                    if ($j>0){
-                        $new_pays = select_code_cio($conn, $_POST['pays']);
-                        $sql2.=", code_cio = '$new_pays'";
-                    }else{
-                        $new_pays = select_code_cio($conn, $_POST['pays']);
-                        $sql2.="set code_cio = '$new_pays'";
-                        $j++;
-                    }
-                }
-                $sql2.=" where n_coureur = ".$n_coureur;
-
-                $cur = preparerRequetePDO($conn, $sql2);
-                $res = majDonneesPrepareesPDO($cur);
-                if ($res){
-                    $sql = "SELECT n_coureur, nom, prenom, annee_naissance, annee_prem, annee_debut, annee_fin, code_cio from tdf_coureur join tdf_app_nation using (n_coureur) where n_coureur=$n_coureur";
-                    $cur = preparerRequetePDO($conn, $sql);
-                    $res = lireDonneesPDOPreparee($cur,$tab);
-                    AfficherCoureur($tab, $res);
-                }
-            }else{
-                if ($_POST['pays'] != "init"){
-                    $pays = select_code_cio($conn, $_POST['pays']);
-
-                    if (!empty($_POST['annee_debut'])){
-                        $annee = $_POST['annee_debut'];
-                        insert_app_nation($conn, $pays, $annee, $n_coureur);
-                        echo "le coureur existe désormais dans la table tdf_app_nation";
-                        include "../Formulaire/Accueil.htm";
-                    }
+                }catch(Exception $e){
+                    echo "La date de début ne sera pas modifiée<br>", $e->getMessage();
                 }
             }
+            
+            if (!empty($_POST['annee_fin'])){
+                if ($j>0){
+                    $new_fin = $_POST['annee_fin'];
+                    $sql2.=", annee_fin = $new_fin";
+                }else{
+                    $new_fin = $_POST['annee_fin'];
+                    $sql2.="set annee_fin = $new_fin";
+                    $j++;
+                }
+            }
+            
+            if ($_POST['pays'] != $pays_coureur && $_POST['pays'] != "init"){
+                if ($j>0){
+                    $new_pays = select_code_cio($conn, $_POST['pays']);
+                    $sql2.=", code_cio = '$new_pays'";
+                }else{
+                    $new_pays = select_code_cio($conn, $_POST['pays']);
+                    $sql2.="set code_cio = '$new_pays'";
+                    $j++;
+                }
+            }
+            $sql2.=" where n_coureur = ".$n_coureur;
+            $cur = preparerRequetePDO($conn, $sql2);
+            $res2 = majDonneesPrepareesPDO($cur);
+
+            display_modif($conn, $n_coureur, $res, $res2);
         }
     }catch(Exception $e){
-        echo $e->getMessage();
+        $message = $e->getMessage();
+        echo "participer_tdf('$message');";
     }
     
 ?>
@@ -230,5 +263,27 @@
           echo "tdf_app_nation : insertion réussie ! ";
         }else
           echo "tdf_app_nation : l'insertion a échouée...";
+    }
+
+    function display_modif($conn, $n_coureur, $res1, $res2){
+        if (($res1 && $res2) || $res1 || $res2){
+            $sql = "SELECT n_coureur, nom, prenom, annee_naissance, annee_prem, annee_debut, annee_fin, code_cio from tdf_coureur join tdf_app_nation using (n_coureur) where n_coureur=$n_coureur";
+            $cur = preparerRequetePDO($conn, $sql);
+            $res = lireDonneesPDOPreparee($cur,$tab);
+            AfficherCoureur($tab, $res);
+            echo "<button><a href='../Formulaire/Accueil.htm'>Retour Accueil</a></button>";
+        }
+    }
+
+    function select_date($conn, $n_coureur, $date){
+        $return_value;
+        $i;
+        $sql = "SELECT $date from tdf_coureur where n_coureur = $n_coureur";
+        $res = LireDonneesPDO1($conn, $sql, $tab);
+        for ($i=0; $i<$res; $i++){
+            foreach($tab[$i] as $key=>$val)
+                $return_value = $val;
+        }
+        return $return_value;
     }
 ?>

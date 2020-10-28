@@ -13,7 +13,11 @@
     $cur = preparerRequetePDO($conn, $sql);
     $res = majDonneesPrepareesPDO($cur);
 
-    if ($res){
+    $sql = "DELETE FROM tdf_app_nation where n_coureur = $n_coureur";
+    $cur = preparerRequetePDO($conn, $sql);
+    $res2 = majDonneesPrepareesPDO($cur);
+
+    if ($res && $res2){
         echo "coureur supprimé ! ";
         echo "<button><a href='../Formulaire/Accueil.htm'>Retour Accueil</a></button>";
     }

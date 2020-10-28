@@ -12,8 +12,7 @@
 
     $n_coureur = select_num_coureur($conn);
     $n_coureur+=1;
-    $jour = date("d/m/y");
-    AfficherTab($jour);
+    $jour = date("Y");
 
     if (!empty($_POST['nom'])){ //vérifie si le prénom existe
       try{ //vérification que le nom est valide
@@ -26,24 +25,28 @@
             if (is_present_db($conn, $nom, $prenom) == 0){ //on vérifie que le couple nom / prénom n'est pas déjà présent dans la DB
               if ($_POST['pays'] != "init"){ //vérifie que le coureur a bien une nationalité
                 try{ //on effectue les tests sur les années
-                  test_annee_complet(2020, $_POST['date_naissance'], $_POST['date_debut'], $_POST['date_prem']);
+                  test_annee_complet($jour, $_POST['date_naissance'], $_POST['date_debut'], $_POST['date_prem']);
                   if (!empty($_POST['date_naissance']) && !empty($_POST['date_prem'])){ //création de la requête SQL si date_naissance et date_prem sont remplies
                     $date_prem = $_POST['date_prem'];
                     $date_naissance = $_POST['date_naissance'];
   
                     $sql = "INSERT INTO tdf_coureur (n_coureur, NOM, PRENOM, ANNEE_NAISSANCE, ANNEE_PREM, COMPTE_ORACLE, DATE_INSERT) values($n_coureur, '$nom', '$prenom', $date_naissance, $date_prem, 'Eleve', sysdate) ";
+                    AfficherTab($sql);
                     $stmt = majDonneesPDO($conn, $sql); //insertion du coureur dans la table tdf_coureur
                     
                   }else if (!empty($_POST['date_naissance']) && empty($_POST['date_prem'])){ //création de la requête SQL si uniquement date_naissance est remplie
                     $date_naissance = $_POST['date_naissance'];
                     $sql = "INSERT INTO tdf_coureur (n_coureur, NOM, PRENOM, ANNEE_NAISSANCE, COMPTE_ORACLE, DATE_INSERT) values($n_coureur, '$nom', '$prenom', $date_naissance, 'Eleve', sysdate) ";
+                    AfficherTab($sql);
                     $stmt = majDonneesPDO($conn, $sql); //insertion du coureur dans la table tdf_coureur
                   }else if(!empty($_POST['date_prem']) && empty($_POST['date_naissance'])){ //création de la requête SQL si uniquement date_prem est remplie
                     $date_prem = $_POST['date_prem'];
                     $sql = "INSERT INTO tdf_coureur (n_coureur, NOM, PRENOM, ANNEE_PREM, COMPTE_ORACLE, DATE_INSERT) values($n_coureur, '$nom', '$prenom', $date_prem, 'Eleve', sysdate) ";
+                    AfficherTab($sql);
                     $stmt = majDonneesPDO($conn, $sql); //insertion du coureur dans la table tdf_coureur
                   }else{ //création de la requête SQL si ni date_naissance, ni date_prem remplie
                     $sql = "INSERT INTO tdf_coureur (n_coureur, nom, prenom, COMPTE_ORACLE, DATE_INSERT) values ($n_coureur, '$nom', '$prenom', 'Eleve', sysdate) ";
+                    AfficherTab($sql);
                     $stmt = majDonneesPDO($conn, $sql); //insertion du coureur dans la table tdf_coureur
                   }
       
@@ -67,7 +70,7 @@
                   }
                 }catch(Exception $e){
                   echo $e->getMessage();
-                  include ("../Formulaire/AjoutCoureur.htm");
+                  //include ("../Formulaire/AjoutCoureur.htm");
                 }
               }else //pays == "init"
                 echo "vous n'avez saisi aucun pays";

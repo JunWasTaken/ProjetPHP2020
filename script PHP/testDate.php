@@ -28,17 +28,17 @@
     }
 
     function test_annee_complet($annee, $naissance, $debut, $prem){
-        if (isset($naissance) && isset($prem) && isset($debut)){
+        if (!empty($naissance) && !empty($prem) && !empty($debut)){
             prem_plus_grande_naissance($prem, $naissance);
             debut_sup_naissance($debut, $naissance);
             debut_inf_prem($debut, $prem);
             annee_naissance_valide($naissance, $annee);
-        }else if (isset($naissance) && isset($prem)){
+        }else if (!empty($naissance) && !empty($prem)){
             annee_naissance_valide($naissance, $annee);
             prem_plus_grande_naissance($prem, $naissance);
-        }else if (isset($naissance) && isset($debut)){
+        }else if (!empty($naissance) && !empty($debut)){
             debut_sup_naissance($debut, $naissance);
-        }else if (isset($debut) && isset($prem))
+        }else if (!empty($debut) && !empty($prem))
             debut_inf_prem($debut, $prem);
 
         return true;

@@ -55,8 +55,8 @@ return $nom;
 }
 
 function remplacerApostrophes($nom){
-	//$apostrophe=array("’"=>"''", "ʾ"=>"''", "′"=>"''", "ˊ"=>"''", "ꞌ"=>"''", "‘"=>"''", "ʿ"=>"''", "‵"=>"''", "ˋ"=>"''" ,"''"=> "' '");
-	$nom = str_replace("'", "''", $nom);
+	//$apostrophe=array("’"=>"'", "ʾ"=>"'", "′"=>"'", "ˊ"=>"'", "ꞌ"=>"'", "‘"=>"'", "ʿ"=>"'", "‵"=>"'", "ˋ"=>"'" ,"''"=> "' '");
+	$nom= str_replace("'", "''", $nom);
 	//$nom = strtr($nom, $apostrophe);
 	return $nom;
 }
@@ -72,30 +72,24 @@ function interdit($nom){
 	$regex3="$\\\\$";
 	$regex4="~^[a-zA-ZÀ-ÖØ-öø-ÿŸœŒ\-'\s']+$~u";
 	$regex5="/[a-zA-Z]/";
-	$regex6="[€\"]";
+	$regex6="[€]";
 
     if(preg_match($regex1, $nom)){
-		echo "Erreur de saisie1 : trop de - dans le nom";
-		return -1;
+		throw new Exception("Erreur de saisie : trop de - dans le nom");
 	}else if(preg_match($regex2, $nom)){
 		echo "Erreur de saisie2";
-		return -1;
 	}else if(preg_match($regex3, $nom)){
-		echo "Erreur de saisie 3 : présence de \ ";
-		return -1;
-	}else if(strlen($nom) > 40){
-		echo "Erreur de saisie4 : chaîne trop longue";
-		return -1;
+		throw new Exception("Erreur de saisie 3 : présence de \ ");
+	}else if(mb_strlen($nom) > 30){
+		throw new Exception("Erreur de saisie 4 : chaîne trop longue");
 	}else if(preg_match($regex6, $nom)){
-		echo "Erreur de saisie : € présent dans la chaîne";
-		return -1;
+		throw new Exception("Erreur de saisie : € présent dans la chaîne");
 	}else if($nom == "'"){
-		echo "vous ne pouvez pas saisir qu'un ' ";
-		return -1;
-	}else if (preg_match($regex4, $nom) || preg_match($regex5, $nom)) {
+		throw new Exception("vous ne pouvez pas saisir qu'un ' ");
+	}else if (preg_match($regex4, $nom) && preg_match($regex5, $nom)) {
 		return 1;
     }else {
-		echo "Erreur de saisie 5 :caractère invalide saisi";
+		throw new Exception("Erreur de saisie 5 :caractère invalide saisi");
 	}
 
 }
@@ -106,13 +100,14 @@ function retireEspace($nom){
 }
 
 function nomValide($nom){ //vérifie que le nom du coureur est bien valide, et le modifie pour qu'il corresponde au formatage de la base de données
-    if (interdit($nom) == 1){
-      $nom = remplacerAccents($nom);
-      $nom = remplacerApostrophes($nom);
-      $nom = retireTiret($nom);
-	  $nom = retireEspace($nom);
-	  $nom = strtoupper($nom);
-      return $nom;
-    }
-  }
+	if (interdit($nom) == 1){
+		$nom = remplacerAccents($nom);
+		$nom = remplacerApostrophes($nom);
+		$nom = retireTiret($nom);
+		$nom = retireEspace($nom);
+		$nom = strtoupper($nom);
+		return $nom;
+	}
+	
+}
 ?>

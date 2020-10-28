@@ -60,7 +60,7 @@ return $prenom;
 }
 
 function remplacerApostrophesPrenom($prenom){ //transforme tout apostrophes différents de < ' >
-	//$apostrophe=array("’"=>"''", "ʾ"=>"''", "′"=>"''", "ˊ"=>"''", "ꞌ"=>"''", "‘"=>"''", "ʿ"=>"''", "‵"=>"''", "ˋ"=>"''" ,"''"=> "' '");
+	//$apostrophe=array("’"=>"'", "ʾ"=>"'", "′"=>"'", "ˊ"=>"'", "ꞌ"=>"'", "‘"=>"'", "ʿ"=>"'", "‵"=>"'", "ˋ"=>"'" ,"''"=> "' '");
 	$prenom = str_replace("'", "''", $prenom);
 	//$prenom = strtr($prenom, $apostrophe);
 	return $prenom;
@@ -93,30 +93,24 @@ function interditPrenom($prenom){
 	$regex3="$\\\\$";
 	$regex4="~^[a-zA-ZÀ-ÖØ-öø-ÿœŒ\-'\s']+$~u";
 	$regex5="/[a-zA-Z]/";
-	$regex6='[€"]';
+	$regex6="[€]";
 
     if(preg_match($regex1, $prenom)){
-		echo "Erreur de saisie1 : trop de - dans le prénom";
-		return -1;
+		throw new Exception("Erreur de saisie : trop de - dans le prenom");
 	}else if(preg_match($regex2, $prenom)){
 		echo "Erreur de saisie2";
-		return -1;
 	}else if(preg_match($regex3, $prenom)){
-		echo "Erreur de saisie 3 : présence de \ ";
-		return -1;
+		throw new Exception("Erreur de saisie 3 : présence de \ ");
+	}else if(mb_strlen($prenom) > 30){
+		throw new Exception("Erreur de saisie 4 : chaîne trop longue");
 	}else if(preg_match($regex6, $prenom)){
-		echo "Erreur de saisie : € présent dans la chaîne";
-		return -1;
-	}else if(strlen($prenom) > 40){
-		echo "chaîne trop longue";
-		return -1;
+		throw new Exception("Erreur de saisie : € présent dans la chaîne");
 	}else if($prenom == "'"){
-		echo "vous ne pouvez pas saisir qu'un ' ";
-		return -1;
-	}else if (preg_match($regex4, $prenom) || preg_match($regex5, $prenom)) {
+		throw new Exception("vous ne pouvez pas saisir qu'un ' ");
+	}else if (preg_match($regex4, $prenom) && preg_match($regex5, $prenom)) {
 		return 1;
     }else {
-    	echo "Erreur de saisie 5 :caractère invalide saisi";
+		throw new Exception("Erreur de saisie 5 :caractère invalide saisi");
 	}
 }
 
@@ -126,15 +120,13 @@ function retireEspacePrenom($prenom){ //remplace des espaces en un seul
 }
 
 function prenomValide($prenom){ //idem que pour le nom mais avec le prénom
-    if (interditPrenom($prenom)==1){
-  	  $prenom = mb_strtolower($prenom);
-  	  $prenom = majPrenom($prenom);
-      $prenom = remplacerAccentsPrenom($prenom);
-      $prenom = remplacerApostrophesPrenom($prenom);
-      $prenom = retireTiretPrenom($prenom);
-	  $prenom = retireEspacePrenom($prenom);
-	  $prenom = my_mb_ucfirstPrenom($prenom);
-      return $prenom;
-    }
-  }
+	if (interdit($prenom) == 1){
+		$prenom = remplacerAccents($prenom);
+		$prenom = remplacerApostrophes($prenom);
+		$prenom = retireTiret($prenom);
+		$prenom = retireEspace($prenom);
+		$prenom = strtoupper($prenom);
+		return $prenom;
+	}
+}
 ?>

@@ -4,7 +4,7 @@
                 
     $id_connection = "PPHP2A_04";
     $mdp_connection = "PPHP2A_04";
-    $BDD = fabriquerChaineConnexPDO();
+    $BDD = "oci:dbname=kiutoracle18.unicaen.fr:1521/info.kiutoracle18.unicaen.fr;charset=AL32UTF8";
     $n_coureur = $_COOKIE['n_coureur'];
     $conn = OuvrirConnexionPDO($BDD,$id_connection,$mdp_connection);
 

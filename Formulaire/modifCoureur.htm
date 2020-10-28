@@ -7,27 +7,44 @@
     <body>
         Saississez les données que vous voulez modifier. Laissez celles que vous ne voulez pas modifier vide. 
         <form method="POST" action="modif_coureur.php">
-            <label for="nom">Nom : </label>
-            <input type="text" name="nom" id="nom" placeholder="nouveau nom">
-            <label for="prénom">Prénom : </label>
-            <input type="text" name="prénom" id="prénom" placeholder="nouveau prénom">
-            <label for="date_naissance">Date de naissance : </label>
-            <input type="number" name="date_naissance" id="date_naissance" placeholder="nouvelle date de naissance">
-            <label for="annee_prem">Année de première participation : </label>
-            <input type="number" name="annee_prem" id="annee_prem" placeholder="nouvelle première année">
-            <label for="annee_debut">Année de début : </label>
-            <input type="number" name="annee_debut" id="annee_debut" placeholder="nouvelle année de début">
-            <label for="annee_fin">Année de fin de carrière : </label>
-            <input type="number" name="annee_fin" id="annee_fin" placeholder="nouvelle annee de fin">
-            <label for="pays">Pays d'origine : </label>
-            <select name="pays">
-                <option value="init">--sélectionner un pays--</option>
-                <?php listePays($conn) ?>
-            </select>
+            <table>
+                <tr>
+                    <label for="nom">Nom : </label>
+                    <input type="text" name="nom" id="nom" placeholder="nouveau nom">
+                </tr>
+                <tr>
+                    <label for="prénom">Prénom : </label>
+                    <input type="text" name="prénom" id="prénom" placeholder="nouveau prénom">
+                </tr>
+                <tr>
+                    <label for="date_naissance">Date de naissance : </label>
+                    <input type="number" name="date_naissance" id="date_naissance" placeholder="nouvelle date de naissance">
+                </tr>
+                <tr>
+                    <label for="annee_prem">Année de première participation : </label>
+                    <input type="number" name="annee_prem" id="annee_prem" placeholder="nouvelle première année">        
+                </tr>
+                <tr>
+                    <label for="annee_debut">Année de début : </label>
+                    <input type="number" name="annee_debut" id="annee_debut" placeholder="nouvelle année de début">
+                </tr>
+                <tr>
+                    <label for="annee_fin">Année de fin de carrière : </label>
+                    <input type="number" name="annee_fin" id="annee_fin" placeholder="nouvelle annee de fin">
+                </tr>
+                <tr>
+                    <label for="pays">Pays d'origine : </label>
+                    <select name="pays">
+                        <option value="init">--sélectionner un pays--</option>
+                        <?php listePays($conn) ?>
+                    </select>
+                </tr>
+            </table>
             <button type="submit">Modifier</button>
         </form>
         <form method="POST" action="delete_coureur.php">
-            <button type="submit" style="color: red;">Supprimer le coureur</button>
+            <button type="submit" style="color: red;" onclick="confirm_deletion();">Supprimer le coureur</button>
         </form>
     </body>
+    <script src="../script JS/confirm.js"></script>
 </html>
